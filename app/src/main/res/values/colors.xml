@@ -14,4 +14,10 @@
 
     <color name="color_worst_tip">#DC1E0B</color>
     <color name="color_best_tip">#35BA01</color>
+
+    <color name="secondary_yellow">#F0C352</color>
+    <color name="darker_yellow">#EDAD09</color>
+    <color name="background_yellow">#BA8807</color>
+
+
 </resources>

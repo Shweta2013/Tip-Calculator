@@ -14,6 +14,14 @@ import androidx.core.content.ContextCompat
 private const val TAG = "MainActivity"
 private const val INITIAL_TIP_PERCENT = 15
 
+private val emojis = mapOf<String, Int>(
+    "poor" to 0x1F61E, //disappointed face
+    "Acceptable" to 0x263A, //smiling face
+    "Good" to 0x1F60A, //smiling face with smiling eyes
+    "Great" to 0x1F929, //star-struck face
+    "Amazing" to 0x1F911, //money-mouth face
+)
+
 class MainActivity : AppCompatActivity() {
     private lateinit var etBaseAmount: EditText
     private lateinit var seekBarTip: SeekBar
@@ -67,25 +75,20 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    private fun getEmoji(unicodeOfEmoji: Int): String {
+        return String(Character.toChars(unicodeOfEmoji))
+    }
+
     private fun updateTipDescription(tipPercent: Int) {
         val tipDescription = when(tipPercent) {
-            in 0..9 -> "Poor"
-            in 10..14 -> "Acceptable"
-            in 15..19 -> "Good"
-            in 20..24 -> "Great"
-            else -> "Amazing"
+            in 0..9 -> emojis["poor"]?.let { getEmoji(it) }
+            in 10..14 -> emojis["Acceptable"]?.let { getEmoji(it) }
+            in 15..19 -> emojis["Good"]?.let { getEmoji(it) }
+            in 20..24 -> emojis["Great"]?.let { getEmoji(it) }
+            else -> emojis["Amazing"]?.let { getEmoji(it) }
         }
 
         tvTipDescription.text = tipDescription
-
-        // Update the color based on tip percent
-        val color = ArgbEvaluator().evaluate(
-            tipPercent.toFloat() / seekBarTip.max,
-            ContextCompat.getColor(this, R.color.color_worst_tip),
-            ContextCompat.getColor(this, R.color.color_best_tip)
-        ) as Int
-
-        tvTipDescription.setTextColor(color)
     }
 
     private fun computeTipAndTotal() {
